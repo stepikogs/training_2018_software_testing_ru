@@ -1,1 +1,1 @@
-# training_2018_software_testing_ru
+# Hello my new python training
