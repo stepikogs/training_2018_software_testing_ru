@@ -12,7 +12,7 @@ def is_alert_present(wd):
         return False
 
 
-class test_add_group(unittest.TestCase):
+class TestAddGroup(unittest.TestCase):
     def setUp(self):
         self.wd = WebDriver(capabilities={"marionette": False})
         self.wd.implicitly_wait(60)
@@ -22,7 +22,9 @@ class test_add_group(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_groups_page(wd)
-        self.create_group(wd, Group(name="testgroup", header="testheader", footer="testfooter"))
+        self.create_group(wd, Group(name="testgroup",
+                                    header="testheader",
+                                    footer="testfooter"))
         self.return_to_groups_page(wd)
         self.logout(wd)
 
@@ -31,7 +33,9 @@ class test_add_group(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_groups_page(wd)
-        self.create_group(wd, Group(name="", header="", footer=""))
+        self.create_group(wd, Group(name="",
+                                    header="",
+                                    footer=""))
         self.return_to_groups_page(wd)
         self.logout(wd)
 
