@@ -129,24 +129,19 @@ class TestAddRecord(unittest.TestCase):
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
 
     def set_date(self, wd, form, value):
+        """
+        helps work with drop-down fields and allows to add these attributes to the 'Record' class
+
+        :param wd:
+        :param form: just formid to (a) specify where to paste value and (b) designate value type form form ID
+        :param value: day/month value to use
+        """
         if form in (1, 3):
             value += 2
         elif form in (2, 4):
             value += 1
         if not wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" + str(value) + "]").is_selected():
             wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" + str(value) + "]").click()
-
-    def set_day(self, wd, form, day):
-        value = str(day + 2)
-        if not wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" + value + "]").is_selected():
-            wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" + value + "]").click()
-
-    def set_mon(self, wd, form, mon):
-        value = str(mon + 1)
-        if not wd.find_element_by_xpath(
-                "//div[@id='content']/form/select[" + str(form) + " ]//option[" + value + "]").is_selected():
-            wd.find_element_by_xpath(
-                "//div[@id='content']/form/select[" + str(form) + " ]//option[" + value + "]").click()
 
     def login(self, wd, username, password):
         wd.find_element_by_name("user").click()
