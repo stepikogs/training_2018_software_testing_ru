@@ -12,13 +12,13 @@ def app(request):
 
 
 def test_add_def_record(app):
-    app.login(username="admin", password="secret")
+    app.session.login(username="admin", password="secret")
     app.create_record(Record())
-    app.logout()
+    app.session.logout()
 
 
 def test_add_empty_record(app):
-    app.login(username="admin", password="secret")
+    app.session.login(username="admin", password="secret")
     app.create_record(Record(firstname="",
                              lastname="",
                              midname="",
@@ -40,11 +40,11 @@ def test_add_empty_record(app):
                              second_phone="",
                              notes=""
                              ))
-    app.logout()
+    app.session.logout()
 
 
 def test_add_record(app):
-    app.login(username="admin", password="secret")
+    app.session.login(username="admin", password="secret")
     app.create_record(Record(firstname="testname",
                              lastname="testlast",
                              midname="testmid",
@@ -70,5 +70,4 @@ def test_add_record(app):
                              second_phone="testhomesec",
                              notes="testnotes"
                              ))
-    app.logout()
-
+    app.session.logout()
