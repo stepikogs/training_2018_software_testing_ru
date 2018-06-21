@@ -3,9 +3,9 @@ __author__ = 'George Stepiko'
 
 class Record:
 
-    def __init__(self, firstname, lastname, midname, nickname, title, company, address, phone, mobile, work,
-                      fax, mail1, mail2, mail3, page, byear, ayear, second_address, second_phone, notes, bday, bmon,
-                      aday, amon):
+    def __init__(self, firstname='', lastname='', midname='', nickname='', title='', company='', address='', phone='',
+                 mobile='', work='', fax='', mail1='', mail2='', mail3='', page='', byear='', ayear='',
+                 second_address='', second_phone='', notes='', bday=0, bmon=0, aday=0, amon=0):
         self.firstname = firstname
         self.lastname = lastname
         self.midname = midname
@@ -14,7 +14,7 @@ class Record:
         self.company = company
         self.address = address
         self.phone = phone
-        self. mobile = mobile
+        self.mobile = mobile
         self.work = work
         self.fax = fax
         self.mail1 = mail1
