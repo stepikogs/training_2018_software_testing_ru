@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
-from classes.group import Group
-from application import Application
+from model.group import Group
+from fixture.application import Application
 
 
 @pytest.fixture
@@ -12,14 +12,6 @@ def app(request):
 
 
 # test methods
-def test_add_group(app):
-    app.login(username="admin", password="secret")
-    app.create_group(Group(name="testgroup",
-                           header="testheader",
-                           footer="testfooter"))
-    app.logout()
-
-
 def test_add_empty_group(app):
     app.login(username="admin", password="secret")
     app.create_group(Group(name="",
@@ -32,3 +24,12 @@ def test_add_def_group(app):
     app.login(username="admin", password="secret")
     app.create_group(Group())
     app.logout()
+
+
+def test_add_group(app):
+    app.login(username="admin", password="secret")
+    app.create_group(Group(name="testgroup",
+                           header="testheader",
+                           footer="testfooter"))
+    app.logout()
+
