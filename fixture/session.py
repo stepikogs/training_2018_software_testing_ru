@@ -1,5 +1,6 @@
 __author__ = 'George Stepiko'
 
+
 class SessionHelper:
 
     def __init__(self, app):

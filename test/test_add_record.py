@@ -13,13 +13,13 @@ def app(request):
 
 def test_add_def_record(app):
     app.session.login(username="admin", password="secret")
-    app.create_record(Record())
+    app.record.create(Record())
     app.session.logout()
 
 
 def test_add_empty_record(app):
     app.session.login(username="admin", password="secret")
-    app.create_record(Record(firstname="",
+    app.record.create(Record(firstname="",
                              lastname="",
                              midname="",
                              nickname="",
@@ -45,7 +45,7 @@ def test_add_empty_record(app):
 
 def test_add_record(app):
     app.session.login(username="admin", password="secret")
-    app.create_record(Record(firstname="testname",
+    app.record.create(Record(firstname="testname",
                              lastname="testlast",
                              midname="testmid",
                              nickname="testnick",
