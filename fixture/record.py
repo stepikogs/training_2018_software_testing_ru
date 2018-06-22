@@ -6,6 +6,7 @@ class RecordHelper:
     def __init__(self, app):
         self.app = app
 
+    # creation
     def create(self, record):
         wd = self.app.wd
         self.app.open_home_page()
@@ -83,6 +84,21 @@ class RecordHelper:
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.app.return_to_home_page()
 
+    # deletion
+    def delete_first(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # check and select first element
+        if not self.app.select_first():
+            # nothing to do as not found
+            print("No elements found so nothing to delete")
+        else:
+            # delete first element if selected successfully
+            wd.find_element_by_xpath('//input[@value="Delete"]').click()
+            # deletion confirmation
+            wd.switch_to_alert().accept()
+
+    # service methods
     def set_date(self, wd, form, value):
         """
         helps work with drop-down fields and allows to add these attributes to the 'Record' class

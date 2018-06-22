@@ -36,8 +36,11 @@ class GroupHelper:
     def delete_first(self):
         wd = self.app.wd
         self.open_groups_page()
-        # select first
-        wd.find_element_by_name("selected[]").click()
-        # delete selection
-        wd.find_element_by_name("delete").click()
-        self.return_to_groups_page()
+        # check and select first element
+        if not self.app.select_first():
+            # nothing to do as not found
+            print("No elements found so nothing to delete")
+        else:
+            # delete first element if selected successfully
+            wd.find_element_by_name("delete").click()
+            self.return_to_groups_page()

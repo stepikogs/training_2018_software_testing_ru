@@ -52,10 +52,10 @@ def test_add_record(app):
                              mail3="testmail3",
                              page="testpage",
                              bday=12,  # the twelfth
-                             bmon=2,  # of February
+                             bmon=2,   # of February
                              byear="1986",
                              aday=13,  # the thirteenth
-                             amon=8,  # of August
+                             amon=8,   # of August
                              ayear="2003",
                              second_address="testsecaddr",
                              second_phone="testhomesec",

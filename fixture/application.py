@@ -1,5 +1,6 @@
 __author__ = 'George Stepiko'
 from selenium.webdriver.firefox.webdriver import WebDriver
+# from selenium.common.exceptions import NoSuchElementException
 from fixture.session import SessionHelper
 from fixture.group import GroupHelper
 from fixture.record import RecordHelper
@@ -10,7 +11,7 @@ class Application:
     # fixture methods
     def __init__(self):
         self.wd = WebDriver(capabilities={"marionette": False})
-        self.wd.implicitly_wait(60)
+        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.record = RecordHelper(self)
@@ -26,3 +27,19 @@ class Application:
     def return_to_home_page(self):
         wd = self.wd
         wd.find_element_by_link_text("home").click()
+
+    def select_first(self):
+        """
+        Very naive check if items list is not empty to delete/modify items
+        works both for groups and records
+
+        :return:
+            True if it exists (item is selected as well)
+            False if no elements found
+        """
+        wd = self.wd
+        if not wd.find_elements_by_name("selected[]"):
+            return False
+        else:
+            wd.find_element_by_name("selected[]").click()
+            return True
