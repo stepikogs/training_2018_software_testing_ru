@@ -30,7 +30,7 @@ class Application:
 
     def select_first(self):
         """
-        Very naive check if items list is not empty to delete/modify items
+        Very naive check if items list is not empty to modify items
         works both for groups and records
 
         :return:
@@ -43,3 +43,18 @@ class Application:
         else:
             wd.find_element_by_name("selected[]").click()
             return True
+
+    def update_text_field(self, field, value):
+        """
+        updates field with value
+        field if assumed to be text and exists
+
+        :param field:
+        :param value:
+        :return:
+        """
+        wd = self.wd
+        wd.find_element_by_name(field).click()
+        wd.find_element_by_name(field).clear()
+        wd.find_element_by_name(field).send_keys(value)
+

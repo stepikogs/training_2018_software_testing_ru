@@ -84,6 +84,19 @@ class RecordHelper:
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.app.return_to_home_page()
 
+    # modification
+    def modify_first(self, field, value):
+        wd = self.app.wd
+        # check and select first element
+        if not self.edit_first():
+            # nothing to do as not found
+            print("No elements found so nothing to modify")
+        else:
+            # modify first element if selected successfully
+            self.app.update_text_field(field, value)
+            wd.find_element_by_name("update").click()
+            self.app.return_to_home_page()
+
     # deletion
     def delete_first(self):
         wd = self.app.wd
@@ -107,7 +120,6 @@ class RecordHelper:
         :param form: just formid to (a) specify where to paste value and (b) designate value type form form ID
         :param value: day/month value to use
         """
-        # wd = self.wd
         if form in (1, 3):
             value += 2
         elif form in (2, 4):
@@ -116,3 +128,20 @@ class RecordHelper:
                                         str(value) + "]").is_selected():
             wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" +
                                      str(value) + "]").click()
+
+    def edit_first(self):
+        """
+        for records table only
+        Very naive check if items list is not empty to modify items
+        works both for groups and records
+
+        :return:
+            True if it exists (item is opened for edit as well)
+            False if no elements found
+        """
+        wd = self.app.wd
+        if not wd.find_elements_by_xpath('//img[@title="Edit"]'):
+            return False
+        else:
+            wd.find_element_by_xpath('//img[@title="Edit"]').click()
+            return True
