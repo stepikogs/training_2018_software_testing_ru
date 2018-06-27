@@ -8,78 +8,26 @@ class RecordHelper:
 
     # creation
     def create(self, record):
+        drops = {"bday": 1,      # attribute: form ID dictionary to process them in different way
+                 "bmonth": 2,
+                 "aday": 3,
+                 "amonth": 4}
         wd = self.app.wd
         self.app.open_home_page()
         # init new record
         wd.find_element_by_link_text("add new").click()
         # fill text fields
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(record.firstname)
-        wd.find_element_by_name("middlename").click()
-        wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys(record.midname)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(record.lastname)
-        wd.find_element_by_name("nickname").click()
-        wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys(record.nickname)
-        wd.find_element_by_name("title").click()
-        wd.find_element_by_name("title").clear()
-        wd.find_element_by_name("title").send_keys(record.title)
-        wd.find_element_by_name("company").click()
-        wd.find_element_by_name("company").clear()
-        wd.find_element_by_name("company").send_keys(record.company)
-        wd.find_element_by_name("address").click()
-        wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(record.address)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(record.phone)
-        wd.find_element_by_name("mobile").click()
-        wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys(record.mobile)
-        wd.find_element_by_name("work").click()
-        wd.find_element_by_name("work").clear()
-        wd.find_element_by_name("work").send_keys(record.work)
-        wd.find_element_by_name("fax").click()
-        wd.find_element_by_name("fax").clear()
-        wd.find_element_by_name("fax").send_keys(record.fax)
-        wd.find_element_by_name("email").click()
-        wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(record.mail1)
-        wd.find_element_by_name("email2").click()
-        wd.find_element_by_name("email2").clear()
-        wd.find_element_by_name("email2").send_keys(record.mail2)
-        wd.find_element_by_name("email3").click()
-        wd.find_element_by_name("email3").clear()
-        wd.find_element_by_name("email3").send_keys(record.mail3)
-        wd.find_element_by_name("homepage").click()
-        wd.find_element_by_name("homepage").clear()
-        wd.find_element_by_name("homepage").send_keys(record.page)
-        # fill birth date in human-readable format
-        self.set_date(wd, form=1, value=record.bday)
-        self.set_date(wd, form=2, value=record.bmon)
-        wd.find_element_by_name("byear").click()
-        wd.find_element_by_name("byear").clear()
-        wd.find_element_by_name("byear").send_keys(record.byear)
-        # fill anniversary date in human-readable format
-        self.set_date(wd, form=3, value=record.aday)
-        self.set_date(wd, form=4, value=record.amon)
-        wd.find_element_by_name("ayear").click()
-        wd.find_element_by_name("ayear").clear()
-        wd.find_element_by_name("ayear").send_keys(record.ayear)
-        # continue with test fields
-        wd.find_element_by_name("address2").click()
-        wd.find_element_by_name("address2").clear()
-        wd.find_element_by_name("address2").send_keys(record.second_address)
-        wd.find_element_by_name("phone2").click()
-        wd.find_element_by_name("phone2").clear()
-        wd.find_element_by_name("phone2").send_keys(record.second_phone)
-        wd.find_element_by_name("notes").click()
-        wd.find_element_by_name("notes").clear()
-        wd.find_element_by_name("notes").send_keys(record.notes)
+        for att in record.__slots__:
+            value = getattr(record, att)
+            if value is not None:  # update only directly set fields
+                if str(att) not in drops:  # if field is not drop-down one (aka set date)
+                    wd.find_element_by_name(str(att)).click()
+                    wd.find_element_by_name(str(att)).clear()
+                    wd.find_element_by_name(str(att)).send_keys(str(value))
+                else:
+                    self.set_date(wd, form=drops[att], value=value)  # drop-down fields processed
+            else:   # PASS if another attribute is not set  to save some execution time
+                print(att + ' property has been PASSED as None (check: ' + str(value) + ').')
         # submit data to new record
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.app.return_to_home_page()
@@ -110,6 +58,17 @@ class RecordHelper:
             wd.find_element_by_xpath('//input[@value="Delete"]').click()
             # deletion confirmation
             wd.switch_to_alert().accept()
+
+    def delete_all(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        if not wd.find_elements_by_id("MassCB"):  # make sure we have any records to delete
+            print()  # just new line here
+            print(str("delete_all_groups: Nothing to do here"))
+        else:
+            wd.find_element_by_id("MassCB").click()    # select all the records...
+            wd.find_element_by_xpath('//input[@value="Delete"]').click()  # ... and delete them
+            wd.switch_to_alert().accept()   # confirmation
 
     # service methods
     def set_date(self, wd, form, value):

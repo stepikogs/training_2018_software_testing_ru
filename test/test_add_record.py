@@ -8,27 +8,36 @@ def test_add_def_record(app):
     app.session.logout()
 
 
+def test_add_group_wrong_attributes(app):
+    # preparation phase
+    rcrd = Record(firstname="name_assigned", bday=23, jeegurda='incorrect', lastname='lastname_assigned')
+    # creation phase
+    app.session.login(username="admin", password="secret")
+    app.record.create(rcrd)
+    app.session.logout()
+
+
 def test_add_empty_record(app):
     app.session.login(username="admin", password="secret")
     app.record.create(Record(firstname="",
                              lastname="",
-                             midname="",
+                             middlename="",
                              nickname="",
                              title="",
                              company="",
                              address="",
-                             phone="",
+                             home="",
                              mobile="",
                              work="",
                              fax="",
-                             mail1="",
-                             mail2="",
-                             mail3="",
-                             page="",
+                             email="",
+                             email2="",
+                             email3="",
+                             homepage="",
                              byear="",
                              ayear="",
-                             second_address="",
-                             second_phone="",
+                             address2="",
+                             phone2="",
                              notes=""
                              ))
     app.session.logout()
@@ -38,27 +47,27 @@ def test_add_record(app):
     app.session.login(username="admin", password="secret")
     app.record.create(Record(firstname="testname",
                              lastname="testlast",
-                             midname="testmid",
+                             middlename="testmid",
                              nickname="testnick",
                              title="testtitle",
                              company="testcompany",
                              address="testaddr",
-                             phone="testphone",
+                             home="testphone",
                              mobile="testmob",
                              work="testwork",
                              fax="testfax",
-                             mail1="tesmmail1",
-                             mail2="testmail2",
-                             mail3="testmail3",
-                             page="testpage",
+                             email="tesmmail1",
+                             email2="testmail2",
+                             email3="testmail3",
+                             homepage="testpage",
                              bday=12,  # the twelfth
-                             bmon=2,   # of February
+                             bmonth=2,   # of February
                              byear="1986",
                              aday=13,  # the thirteenth
-                             amon=8,   # of August
+                             amonth=8,   # of August
                              ayear="2003",
-                             second_address="testsecaddr",
-                             second_phone="testhomesec",
+                             address2="testsecaddr",
+                             phone2="testhomesec",
                              notes="testnotes"
                              ))
     app.session.logout()
