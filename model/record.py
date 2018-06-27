@@ -8,6 +8,7 @@ class Record:
                 "middlename", \
                 "lastname", \
                 "nickname", \
+                "photo",\
                 "title", \
                 "company", \
                 "address", \
@@ -37,6 +38,7 @@ class Record:
         self.lastname = kwargs.get('lastname')
         self.middlename = kwargs.get('middlename')
         self.nickname = kwargs.get('nickname')
+        self.photo = kwargs.get('photo')
         self.title = kwargs.get('title')
         self.company = kwargs.get('company')
         self.address = kwargs.get('address')

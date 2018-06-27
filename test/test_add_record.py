@@ -10,8 +10,34 @@ def test_add_def_record(app):
 
 def test_add_group_wrong_attributes(app):
     # preparation phase
-    rcrd = Record(firstname="name_assigned", bday=23, jeegurda='incorrect', lastname='lastname_assigned')
+    rcrd = Record(firstname="name_assigned",
+                  bday=23,
+                  jeegurda='incorrect',
+                  lastname='lastname_assigned')
     # creation phase
+    app.session.login(username="admin", password="secret")
+    app.record.create(rcrd)
+    app.session.logout()
+
+
+def test_add_record_with_photo_only(app):
+    # prepare record with photo
+    rcrd = Record(photo="C:\\Users\\python\\PycharmProjects\\training_2018_software_testing_ru\\playground\\239005.jpg")
+    # create it
+    app.session.login(username="admin", password="secret")
+    app.record.create(rcrd)
+    app.session.logout()
+
+
+def test_add_record_with_photo(app):
+    # prepare record with photo
+    rcrd = Record(photo="C:\\Users\\python\\PycharmProjects\\training_2018_software_testing_ru\\playground\\239005.jpg",
+                  firstname='me is having photo',
+                  bday=23,
+                  bmonth=7,
+                  byear=1976,
+                  jeegurda='ignore it')
+    # create it
     app.session.login(username="admin", password="secret")
     app.record.create(rcrd)
     app.session.logout()

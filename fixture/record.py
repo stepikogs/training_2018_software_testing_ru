@@ -12,6 +12,7 @@ class RecordHelper:
                  "bmonth": 2,
                  "aday": 3,
                  "amonth": 4}
+        upload = "photo"
         wd = self.app.wd
         self.app.open_home_page()
         # init new record
@@ -20,12 +21,16 @@ class RecordHelper:
         for att in record.__slots__:
             value = getattr(record, att)
             if value is not None:  # update only directly set fields
-                if str(att) not in drops:  # if field is not drop-down one (aka set date)
+                if str(att) not in drops and str(att) not in upload:  # if field is not drop-down one (aka set date)
                     wd.find_element_by_name(str(att)).click()
                     wd.find_element_by_name(str(att)).clear()
                     wd.find_element_by_name(str(att)).send_keys(str(value))
-                else:
+                elif str(att) in drops:
                     self.set_date(wd, form=drops[att], value=value)  # drop-down fields processed
+                elif str(att) in upload:
+                    wd.find_element_by_name(str(att)).send_keys(value)
+                else:
+                    pass
             else:   # PASS if another attribute is not set  to save some execution time
                 print(att + ' property has been PASSED as None (check: ' + str(value) + ').')
         # submit data to new record
