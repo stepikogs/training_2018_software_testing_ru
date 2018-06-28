@@ -24,10 +24,8 @@ class GroupHelper:
         # fill group form passing not required fields
         for att in group.__slots__:  # get attributes from __slots__
             value = getattr(group, att)
-            if value is not None:  # check if value is no None to PASS field and reduce execution time
-                wd.find_element_by_name(str(att)).click()
-                wd.find_element_by_name(str(att)).clear()
-                wd.find_element_by_name(str(att)).send_keys(getattr(group, att))
+            if value:  # is not None:  # check if value is no None to PASS field and reduce execution time
+                self.app.update_text_field(field=str(att), value=str(value))
             else:  # PASS if value is None - not set directly
                 print(att + ' property has been PASSED as None (check: ' + str(value) + ').')
         wd.find_element_by_name("submit").click()

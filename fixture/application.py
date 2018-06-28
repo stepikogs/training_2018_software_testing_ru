@@ -1,6 +1,5 @@
 __author__ = 'George Stepiko'
 from selenium.webdriver.firefox.webdriver import WebDriver
-# from selenium.common.exceptions import NoSuchElementException
 from fixture.session import SessionHelper
 from fixture.group import GroupHelper
 from fixture.record import RecordHelper
@@ -58,3 +57,13 @@ class Application:
         wd.find_element_by_name(field).clear()
         wd.find_element_by_name(field).send_keys(value)
 
+    def upload_file(self, field, path):
+        """
+        uploads file in easy way
+
+        :param field: button to submit a file
+        :param path: absolute path to file
+        :return:
+        """
+        wd = self.wd
+        wd.find_element_by_name(field).send_keys(path)

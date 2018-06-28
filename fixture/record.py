@@ -20,17 +20,15 @@ class RecordHelper:
         # fill text fields
         for att in record.__slots__:
             value = getattr(record, att)
-            if value is not None:  # update only directly set fields
+            if value:  # is not None:  # update only directly set fields
                 if str(att) not in drops and str(att) not in upload:  # if field is not drop-down one (aka set date)
-                    wd.find_element_by_name(str(att)).click()
-                    wd.find_element_by_name(str(att)).clear()
-                    wd.find_element_by_name(str(att)).send_keys(str(value))
+                    self.app.update_text_field(field=str(att), value=str(value))
                 elif str(att) in drops:
                     self.set_date(wd, form=drops[att], value=value)  # drop-down fields processed
                 elif str(att) in upload:
-                    wd.find_element_by_name(str(att)).send_keys(value)
+                    self.app.upload_file(field=str(att), path=str(value))
                 else:
-                    pass
+                    print('There is no way to reach this!')
             else:   # PASS if another attribute is not set  to save some execution time
                 print(att + ' property has been PASSED as None (check: ' + str(value) + ').')
         # submit data to new record
@@ -74,6 +72,7 @@ class RecordHelper:
             wd.find_element_by_id("MassCB").click()    # select all the records...
             wd.find_element_by_xpath('//input[@value="Delete"]').click()  # ... and delete them
             wd.switch_to_alert().accept()   # confirmation
+
 
     # service methods
     def set_date(self, wd, form, value):
