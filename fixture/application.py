@@ -10,7 +10,6 @@ class Application:
     # fixture methods
     def __init__(self):
         self.wd = WebDriver(capabilities={"marionette": False})
-        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.record = RecordHelper(self)
@@ -29,6 +28,8 @@ class Application:
     # common methods
     def open_home_page(self):
         wd = self.wd
+        if wd.current_url.endswith('/addressbook/'):
+            return
         wd.get("http://localhost/addressbook/")
 
     def return_to_home_page(self):
@@ -36,14 +37,6 @@ class Application:
         wd.find_element_by_link_text("home").click()
 
     def select_first(self):
-        """
-        Very naive check if items list is not empty to modify items
-        works both for groups and records
-
-        :return:
-            True if it exists (item is selected as well)
-            False if no elements found
-        """
         wd = self.wd
         wd.find_element_by_name("selected[]").click()
 

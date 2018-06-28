@@ -10,6 +10,8 @@ class GroupHelper:
     # groups navigation
     def open_groups_page(self):
         wd = self.app.wd
+        if wd.current_url.endswith('/group.php') and wd.find_elements_by_name('new'):
+            return
         wd.find_element_by_link_text("groups").click()
 
     def return_to_groups_page(self):
