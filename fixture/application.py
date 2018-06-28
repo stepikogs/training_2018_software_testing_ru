@@ -53,10 +53,11 @@ class Application:
         :return:
         """
         wd = self.wd
-        if value is not None:
+        if value:  # is not None:
             wd.find_element_by_name(field).click()
             wd.find_element_by_name(field).clear()
             wd.find_element_by_name(field).send_keys(value)
+            print(field + ' property is set as "' + str(value) + '".')  # str(value) as value could be INT for years
         else:
             print(field + ' property has been PASSED as None (check: ' + str(value) + ').')
 
