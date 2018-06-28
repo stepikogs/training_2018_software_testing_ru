@@ -3,9 +3,7 @@ from model.record import Record
 
 
 def test_add_def_record(app):
-    app.session.login(username="admin", password="secret")
     app.record.create(Record())
-    app.session.logout()
 
 
 def test_add_group_wrong_attributes(app):
@@ -15,18 +13,14 @@ def test_add_group_wrong_attributes(app):
                   jeegurda='incorrect',
                   lastname='lastname_assigned')
     # creation phase
-    app.session.login(username="admin", password="secret")
     app.record.create(rcrd)
-    app.session.logout()
 
 
 def test_add_record_with_photo_only(app):
     # prepare record with photo
     rcrd = Record(photo="C:\\Users\\python\\PycharmProjects\\training_2018_software_testing_ru\\playground\\239005.jpg")
     # create it
-    app.session.login(username="admin", password="secret")
     app.record.create(rcrd)
-    app.session.logout()
 
 
 def test_add_record_with_photo(app):
@@ -38,13 +32,10 @@ def test_add_record_with_photo(app):
                   byear=1976,
                   jeegurda='ignore it')
     # create it
-    app.session.login(username="admin", password="secret")
     app.record.create(rcrd)
-    app.session.logout()
 
 
 def test_add_empty_record(app):
-    app.session.login(username="admin", password="secret")
     app.record.create(Record(firstname="",
                              lastname="",
                              middlename="",
@@ -66,11 +57,9 @@ def test_add_empty_record(app):
                              phone2="",
                              notes=""
                              ))
-    app.session.logout()
 
 
 def test_add_record(app):
-    app.session.login(username="admin", password="secret")
     app.record.create(Record(firstname="testname",
                              lastname="testlast",
                              middlename="testmid",
@@ -96,4 +85,3 @@ def test_add_record(app):
                              phone2="testhomesec",
                              notes="testnotes"
                              ))
-    app.session.logout()
