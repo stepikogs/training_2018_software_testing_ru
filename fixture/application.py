@@ -15,6 +15,14 @@ class Application:
         self.group = GroupHelper(self)
         self.record = RecordHelper(self)
 
+    def is_valid(self):
+        try:
+            self.wd.current_url
+            return True
+        except:
+            print('fixture is not valid, re-create.')
+            return False
+
     def destroy(self):
         self.wd.quit()
 
