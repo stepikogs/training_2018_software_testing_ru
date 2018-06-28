@@ -20,17 +20,17 @@ class RecordHelper:
         # fill text fields
         for att in record.__slots__:
             value = getattr(record, att)
-            if value:  # is not None:  # update only directly set fields
-                if str(att) not in drops and str(att) not in upload:  # if field is not drop-down one (aka set date)
-                    self.app.update_text_field(field=str(att), value=str(value))
-                elif str(att) in drops:
-                    self.set_date(wd, form=drops[att], value=value)  # drop-down fields processed
-                elif str(att) in upload:
-                    self.app.upload_file(field=str(att), path=str(value))
-                else:
-                    print('There is no way to reach this!')
-            else:   # PASS if another attribute is not set  to save some execution time
-                print(att + ' property has been PASSED as None (check: ' + str(value) + ').')
+            # if value:  # is not None:  # update only directly set fields
+            if str(att) not in drops and str(att) not in upload:  # if field is not drop-down one (aka set date)
+                self.app.update_text_field(field=att, value=value)
+            elif str(att) in drops:
+                self.set_date(wd, form=drops[att], value=value)  # drop-down fields processed
+            elif str(att) in upload:
+                self.app.upload_file(field=att, path=value)
+            else:
+                print('There is no way to reach this!')
+            # else:   # PASS if another attribute is not set  to save some execution time
+            #     print(att + ' property has been PASSED as None (check: ' + str(value) + ').')
         # submit data to new record
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.app.return_to_home_page()
@@ -83,14 +83,15 @@ class RecordHelper:
         :param form: just formid to (a) specify where to paste value and (b) designate value type form form ID
         :param value: day/month value to use
         """
-        if form in (1, 3):
-            value += 2
-        elif form in (2, 4):
-            value += 1
-        if not wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" +
-                                        str(value) + "]").is_selected():
-            wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" +
-                                     str(value) + "]").click()
+        if value:
+            if form in (1, 3):
+                value += 2
+            elif form in (2, 4):
+                value += 1
+            if not wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" +
+                                            str(value) + "]").is_selected():
+                wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" +
+                                         str(value) + "]").click()
 
     def edit_first(self):
         """

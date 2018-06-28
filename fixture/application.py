@@ -53,9 +53,12 @@ class Application:
         :return:
         """
         wd = self.wd
-        wd.find_element_by_name(field).click()
-        wd.find_element_by_name(field).clear()
-        wd.find_element_by_name(field).send_keys(value)
+        if value is not None:
+            wd.find_element_by_name(field).click()
+            wd.find_element_by_name(field).clear()
+            wd.find_element_by_name(field).send_keys(value)
+        else:
+            print(field + ' property has been PASSED as None (check: ' + str(value) + ').')
 
     def upload_file(self, field, path):
         """
@@ -66,4 +69,7 @@ class Application:
         :return:
         """
         wd = self.wd
-        wd.find_element_by_name(field).send_keys(path)
+        if path:
+            wd.find_element_by_name(field).send_keys(path)
+        else:
+            print('Nothing to upload')
