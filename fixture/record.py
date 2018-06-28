@@ -1,4 +1,5 @@
 __author__ = 'George Stepiko'
+from model.record import Record
 
 
 class RecordHelper:
@@ -38,40 +39,31 @@ class RecordHelper:
     # modification
     def modify_first(self, upd_group):
         wd = self.app.wd
-        # check and select first element
-        if not self.edit_first():
-            # nothing to do as not found
-            print("No elements found so nothing to modify")
-        else:
-            # modify first element if selected successfully
-            self.fill_record_form(upd_group)
-            wd.find_element_by_name("update").click()
-            self.app.return_to_home_page()
+        wd.find_element_by_xpath('//img[@title="Edit"]').click()
+        self.fill_record_form(upd_group)
+        wd.find_element_by_name("update").click()
+        self.app.return_to_home_page()
 
     # deletion
     def delete_first(self):
         wd = self.app.wd
         self.app.open_home_page()
-        # check and select first element
-        if not self.app.select_first():
-            # nothing to do as not found
-            print("No elements found so nothing to delete")
-        else:
-            # delete first element if selected successfully
-            wd.find_element_by_xpath('//input[@value="Delete"]').click()
-            # deletion confirmation
-            wd.switch_to_alert().accept()
+        # select first record
+        self.app.select_first()
+        # delete first element if selected successfully
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        # deletion confirmation
+        wd.switch_to_alert().accept()
 
     def delete_all(self):
         wd = self.app.wd
         self.app.open_home_page()
-        if not wd.find_elements_by_id("MassCB"):  # make sure we have any records to delete
-            print()  # just new line here
-            print(str("delete_all_groups: Nothing to do here"))
-        else:
-            wd.find_element_by_id("MassCB").click()  # select all the records...
-            wd.find_element_by_xpath('//input[@value="Delete"]').click()  # ... and delete them
-            wd.switch_to_alert().accept()  # confirmation
+        # select all the records...
+        wd.find_element_by_id("MassCB").click()
+        # ... and delete them
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        # confirmation
+        wd.switch_to_alert().accept()
 
     # service methods
     def set_date(self, form, value):
@@ -92,19 +84,13 @@ class RecordHelper:
                 wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" +
                                          str(value) + "]").click()
 
-    def edit_first(self):
-        """
-        for records table only
-        Very naive check if items list is not empty to modify items
-        works both for groups and records
-
-        :return:
-            True if it exists (item is opened for edit as well)
-            False if no elements found
-        """
+    def provide(self, count=1):
         wd = self.app.wd
-        if not wd.find_elements_by_xpath('//img[@title="Edit"]'):
-            return False
+        self.app.open_home_page()
+        records_delta = count - len(wd.find_elements_by_name("selected[]"))
+        if records_delta > 0:
+            for item in range(records_delta):
+                self.create(Record(firstname='dummy'))
+            print('No enough records found so ' + str(records_delta) + ' new dummy record(-s) created')
         else:
-            wd.find_element_by_xpath('//img[@title="Edit"]').click()
-            return True
+            print('Enough records for the test, nothing to create here, (Check: ' + str(records_delta) + ').')

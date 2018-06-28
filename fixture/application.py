@@ -45,11 +45,7 @@ class Application:
             False if no elements found
         """
         wd = self.wd
-        if not wd.find_elements_by_name("selected[]"):
-            return False
-        else:
-            wd.find_element_by_name("selected[]").click()
-            return True
+        wd.find_element_by_name("selected[]").click()
 
     def update_text_field(self, field, value):
         """
