@@ -28,7 +28,7 @@ class Application:
     # common methods
     def open_home_page(self):
         wd = self.wd
-        if wd.current_url.endswith('/addressbook/'):
+        if wd.current_url.endswith('/addressbook/') and wd.find_elements_by_xpath('//img[@title="Details"]'):
             return
         wd.get("http://localhost/addressbook/")
 
