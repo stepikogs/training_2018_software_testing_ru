@@ -25,7 +25,7 @@ class GroupHelper:
         # init group creation
         wd.find_element_by_name("new").click()
         # fill group form passing not required fields
-        self.fill_group_form(group)
+        self.fill_form(group)
         wd.find_element_by_name("submit").click()
         self.return_to_groups_page()
 
@@ -36,7 +36,7 @@ class GroupHelper:
         # edit first group found in list
         wd.find_element_by_name("edit").click()
         # self.app.update_text_field(field, value)  # 'None' check is inside
-        self.fill_group_form(upd_group)
+        self.fill_form(upd_group)
         wd.find_element_by_name("update").click()
         self.return_to_groups_page()
 
@@ -59,12 +59,25 @@ class GroupHelper:
         wd.find_element_by_name("delete").click()  # delete all the groups selected
         self.return_to_groups_page()
 
+    # load
+    def get_list(self):
+        wd = self.app.wd
+        self.open_groups_page()
+        grouplist = []
+        for el in wd.find_elements_by_css_selector("span.group"):
+            grouptext = el.text
+            groupid = el.find_element_by_name('selected[]').get_attribute('value')
+            grouplist.append(Group(group_name=grouptext,
+                                   id=groupid))
+        return grouplist
+
     # service methods
-    def fill_group_form(self, fill_group):
+    def fill_form(self, fill_group):
         for att in fill_group.__slots__:  # get attributes from __slots__
-            value = getattr(fill_group, att)
-            print(att, value)
-            self.app.update_text_field(field=att, value=value)
+            if att is not 'id':
+                value = getattr(fill_group, att)
+                # print(att, value)
+                self.app.update_text_field(field=att, value=value)
 
     def provide(self, count=1):
         wd = self.app.wd
