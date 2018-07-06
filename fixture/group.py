@@ -34,6 +34,7 @@ class GroupHelper:
         wd = self.app.wd
         self.open_groups_page()
         # edit first group found in list
+        self.app.select_first()
         wd.find_element_by_name("edit").click()
         # self.app.update_text_field(field, value)  # 'None' check is inside
         self.fill_form(upd_group)
