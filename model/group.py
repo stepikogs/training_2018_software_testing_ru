@@ -23,6 +23,7 @@ class Group:
 
     def __eq__(self, other):
         # id will be None  fro new-created object as unable to set it properly
+        # group name could be None if not updated; '' value will be asserted from list
         return (self.id is None or other.id is None or self.id == other.id) and \
                (self.group_name == other.group_name or (self.group_name is None and other.group_name == ''))
 

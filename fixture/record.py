@@ -13,12 +13,12 @@ class RecordHelper:
         self.app.open_home_page()
         # init new record
         wd.find_element_by_link_text("add new").click()
-        self.fill_record_form(record)
+        self.fill_form(record)
         # submit data to new record
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.app.return_to_home_page()
 
-    def fill_record_form(self, record):
+    def fill_form(self, record):
         drops = {"bday": 1,  # attribute: form ID dictionary to process them in different way
                  "bmonth": 2,
                  "aday": 3,
@@ -26,21 +26,22 @@ class RecordHelper:
         upload = "photo"  # upload field is special as well
         # fill text fields
         for att in record.__slots__:
-            value = getattr(record, att)
-            if str(att) not in drops and str(att) not in upload:  # if field is not drop-down one (aka set date)
-                self.app.update_text_field(field=att, value=value)
-            elif str(att) in drops:
-                self.set_date(form=drops[att], value=value)  # drop-down fields processed
-            elif str(att) in upload:
-                self.app.upload_file(field=att, path=value)
-            else:
-                print('There is no way to reach this!')
+            if att is not 'id':
+                value = getattr(record, att)
+                if str(att) not in drops and str(att) not in upload:  # if field is not drop-down one (aka set date)
+                    self.app.update_text_field(field=att, value=value)
+                elif str(att) in drops:
+                    self.set_date(form=drops[att], value=value)  # drop-down fields processed
+                elif str(att) in upload:
+                    self.app.upload_file(field=att, path=value)
+                else:
+                    print('There is no way to reach this!')
 
     # modification
-    def modify_first(self, upd_group):
+    def modify_first(self, upd_record):
         wd = self.app.wd
         wd.find_element_by_xpath('//img[@title="Edit"]').click()
-        self.fill_record_form(upd_group)
+        self.fill_form(upd_record)
         wd.find_element_by_name("update").click()
         self.app.return_to_home_page()
 
@@ -64,6 +65,21 @@ class RecordHelper:
         wd.find_element_by_xpath('//input[@value="Delete"]').click()
         # confirmation
         wd.switch_to_alert().accept()
+
+    # load
+    def get_list(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        reclist = []
+        # print(len(wd.find_elements_by_xpath('//*[@id="maintable"]/tbody/tr[@name="entry"]')))
+        for el in wd.find_elements_by_xpath('//*[@id="maintable"]/tbody/tr[@name="entry"]'):
+            first = el.find_element_by_xpath('td[3]').text
+            last = el.find_element_by_xpath('td[2]').text
+            recid = el.find_element_by_name('selected[]').get_attribute('value')
+            reclist.append(Record(firstname=first,
+                                  lastname=last,
+                                  id=recid))
+        return reclist
 
     # service methods
     def set_date(self, form, value):

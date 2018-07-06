@@ -18,7 +18,3 @@ def test_delete_all_groups(app):
     new_groups = app.group.get_list()
     # no groups left as result
     assert len(new_groups) == 0
-
-
-def test_service(app):
-    app.group.provide(count=10)

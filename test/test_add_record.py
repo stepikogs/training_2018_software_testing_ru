@@ -3,19 +3,31 @@ from model.record import Record
 
 
 def test_add_def_record(app):
-    app.record.create(Record())
+    old_rec = app.record.get_list()
+    rcrd = Record()
+    app.record.create(rcrd)
+    new_rec = app.record.get_list()
+    assert len(old_rec) + 1 == len(new_rec)
+    old_rec.append(rcrd)
+    assert sorted(old_rec, key=Record.id_or_max) == sorted(new_rec, key=Record.id_or_max)
 
 
-def test_add_group_wrong_attributes(app):
+def test_add_record_wrong_attributes(app):
     # preparation phase
+    old_rec = app.record.get_list()
     rcrd = Record(firstname="name_assigned",
                   bday=23,
                   jeegurda='incorrect',
                   lastname='lastname_assigned')
     # creation phase
     app.record.create(rcrd)
+    new_rec = app.record.get_list()
+    assert len(old_rec) + 1 == len(new_rec)
+    old_rec.append(rcrd)
+    assert sorted(old_rec, key=Record.id_or_max) == sorted(new_rec, key=Record.id_or_max)
 
 
+# temp commented out
 def test_add_record_with_photo_only(app):
     # prepare record with photo
     rcrd = Record(photo="C:\\Users\\python\\PycharmProjects\\training_2018_software_testing_ru\\playground\\239005.jpg")
