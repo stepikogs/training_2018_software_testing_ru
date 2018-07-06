@@ -1,4 +1,5 @@
 __author__ = 'George Stepiko'
+from sys import maxsize
 
 
 class Group:
@@ -21,4 +22,12 @@ class Group:
         return '%s:%s' % (self.id, self.group_name)
 
     def __eq__(self, other):
-        return self.id == other.id and self.group_name == other.group_name
+        # id will be None  fro new-created object as unable to set it properly
+        return (self.id is None or other.id is None or self.id == other.id) and \
+               (self.group_name == other.group_name or (self.group_name is None and other.group_name == ''))
+
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
+        else:
+            return maxsize
