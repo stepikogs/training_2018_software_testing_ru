@@ -28,6 +28,7 @@ class GroupHelper:
         self.fill_form(group)
         wd.find_element_by_name("submit").click()
         self.return_to_groups_page()
+        self.group_cash = None
 
     # modification
     def modify_first(self, upd_group):
@@ -40,6 +41,8 @@ class GroupHelper:
         self.fill_form(upd_group)
         wd.find_element_by_name("update").click()
         self.return_to_groups_page()
+        self.group_cash = None
+
 
     # deletion
     def delete_first(self):
@@ -50,6 +53,8 @@ class GroupHelper:
         # delete the group selected
         wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
+        self.group_cash = None
+
 
     def delete_all(self):
         wd = self.app.wd
@@ -59,18 +64,23 @@ class GroupHelper:
             item.click()  # select any group found
         wd.find_element_by_name("delete").click()  # delete all the groups selected
         self.return_to_groups_page()
+        self.group_cash = None
+
 
     # load
+    group_cash = None
+
     def get_list(self):
-        wd = self.app.wd
-        self.open_groups_page()
-        grouplist = []
-        for el in wd.find_elements_by_css_selector("span.group"):
-            grouptext = el.text
-            groupid = el.find_element_by_name('selected[]').get_attribute('value')
-            grouplist.append(Group(group_name=grouptext,
-                                   id=groupid))
-        return grouplist
+        if self.group_cash is None:
+            wd = self.app.wd
+            self.open_groups_page()
+            self.group_cash = []
+            for el in wd.find_elements_by_css_selector("span.group"):
+                grouptext = el.text
+                groupid = el.find_element_by_name('selected[]').get_attribute('value')
+                self.group_cash.append(Group(group_name=grouptext,
+                                       id=groupid))
+        return list(self.group_cash)
 
     # service methods
     def fill_form(self, fill_group):
