@@ -37,8 +37,11 @@ class Application:
         wd.find_element_by_link_text("home").click()
 
     def select_first(self):
+        self.select_by_index(0)
+
+    def select_by_index(self, index):
         wd = self.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def update_text_field(self, field, value):
         """
