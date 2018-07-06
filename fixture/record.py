@@ -17,7 +17,57 @@ class RecordHelper:
         # submit data to new record
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.app.return_to_home_page()
+        self.rec_cash = None
 
+    # modification
+    def modify_first(self, upd_record):
+        wd = self.app.wd
+        wd.find_element_by_xpath('//img[@title="Edit"]').click()
+        self.fill_form(upd_record)
+        wd.find_element_by_name("update").click()
+        self.app.return_to_home_page()
+        self.rec_cash = None
+
+    # deletion
+    def delete_first(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # select first record
+        self.app.select_first()
+        # delete first element if selected successfully
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        # deletion confirmation
+        wd.switch_to_alert().accept()
+        self.rec_cash = None
+
+    def delete_all(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # select all the records...
+        wd.find_element_by_id("MassCB").click()
+        # ... and delete them
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        # confirmation
+        wd.switch_to_alert().accept()
+        self.rec_cash = None
+
+    # load
+    rec_cash = None
+
+    def get_list(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.rec_cash = []
+        for el in wd.find_elements_by_xpath('//*[@id="maintable"]/tbody/tr[@name="entry"]'):
+            first = el.find_element_by_xpath('td[3]').text
+            last = el.find_element_by_xpath('td[2]').text
+            recid = el.find_element_by_name('selected[]').get_attribute('value')
+            self.rec_cash.append(Record(firstname=first,
+                                  lastname=last,
+                                  id=recid))
+        return list(self.rec_cash)
+
+    # service methods
     def fill_form(self, record):
         drops = {"bday": 1,  # attribute: form ID dictionary to process them in different way
                  "bmonth": 2,
@@ -37,51 +87,6 @@ class RecordHelper:
                 else:
                     print('There is no way to reach this!')
 
-    # modification
-    def modify_first(self, upd_record):
-        wd = self.app.wd
-        wd.find_element_by_xpath('//img[@title="Edit"]').click()
-        self.fill_form(upd_record)
-        wd.find_element_by_name("update").click()
-        self.app.return_to_home_page()
-
-    # deletion
-    def delete_first(self):
-        wd = self.app.wd
-        self.app.open_home_page()
-        # select first record
-        self.app.select_first()
-        # delete first element if selected successfully
-        wd.find_element_by_xpath('//input[@value="Delete"]').click()
-        # deletion confirmation
-        wd.switch_to_alert().accept()
-
-    def delete_all(self):
-        wd = self.app.wd
-        self.app.open_home_page()
-        # select all the records...
-        wd.find_element_by_id("MassCB").click()
-        # ... and delete them
-        wd.find_element_by_xpath('//input[@value="Delete"]').click()
-        # confirmation
-        wd.switch_to_alert().accept()
-
-    # load
-    def get_list(self):
-        wd = self.app.wd
-        self.app.open_home_page()
-        reclist = []
-        # print(len(wd.find_elements_by_xpath('//*[@id="maintable"]/tbody/tr[@name="entry"]')))
-        for el in wd.find_elements_by_xpath('//*[@id="maintable"]/tbody/tr[@name="entry"]'):
-            first = el.find_element_by_xpath('td[3]').text
-            last = el.find_element_by_xpath('td[2]').text
-            recid = el.find_element_by_name('selected[]').get_attribute('value')
-            reclist.append(Record(firstname=first,
-                                  lastname=last,
-                                  id=recid))
-        return reclist
-
-    # service methods
     def set_date(self, form, value):
         """
         helps work with drop-down fields and allows to add these attributes to the 'Record' class
