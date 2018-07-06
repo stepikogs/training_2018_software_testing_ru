@@ -20,13 +20,16 @@ class RecordHelper:
         self.rec_cash = None
 
     # modification
-    def modify_first(self, upd_record):
+    def modify_by_index(self, upd_record, index):
         wd = self.app.wd
-        wd.find_element_by_xpath('//img[@title="Edit"]').click()
+        wd.find_elements_by_xpath('//img[@title="Edit"]')[index].click()
         self.fill_form(upd_record)
         wd.find_element_by_name("update").click()
         self.app.return_to_home_page()
         self.rec_cash = None
+
+    def modify_first(self, upd_record):
+        self.modify_by_index(upd_record=upd_record, index=0)
 
     # deletion
     def delete_first(self):
