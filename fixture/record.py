@@ -105,10 +105,14 @@ class RecordHelper:
                 wd.find_element_by_xpath("//div[@id='content']/form/select[" + str(form) + " ]//option[" +
                                          str(value) + "]").click()
 
-    def provide(self, count=1):
+    def count(self):
         wd = self.app.wd
         self.app.open_home_page()
-        records_delta = count - len(wd.find_elements_by_name("selected[]"))
+        return len(wd.find_elements_by_name("selected[]"))
+
+    def provide(self, requested=1):
+        self.app.open_home_page()
+        records_delta = requested - self.count()
         if records_delta > 0:
             for item in range(records_delta):
                 self.create(Record(firstname='dummy'))
