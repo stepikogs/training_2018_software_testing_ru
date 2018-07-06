@@ -10,7 +10,7 @@ def test_delete_random_group(app):
     app.group.delete_by_index(index)
     assert len(old_groups) - 1 == app.group.count()
     new_groups = app.group.get_list()
-    old_groups[index: index+1] = []
+    old_groups[index:index+1] = []
     assert old_groups == new_groups
 
 

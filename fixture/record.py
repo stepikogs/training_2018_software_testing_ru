@@ -32,16 +32,19 @@ class RecordHelper:
         self.modify_by_index(upd_record=upd_record, index=0)
 
     # deletion
-    def delete_first(self):
+    def delete_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page()
         # select first record
-        self.app.select_first()
+        self.app.select_by_index(index=index)
         # delete first element if selected successfully
         wd.find_element_by_xpath('//input[@value="Delete"]').click()
         # deletion confirmation
         wd.switch_to_alert().accept()
         self.rec_cash = None
+
+    def delete_first(self):
+        self.delete_by_index(0)
 
     def delete_all(self):
         wd = self.app.wd
