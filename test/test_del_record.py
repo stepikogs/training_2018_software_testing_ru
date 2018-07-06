@@ -13,7 +13,7 @@ def test_delete_first_record(app):
 
 
 def test_delete_all_records(app):
-    app.record.provide(count=3)
+    app.record.provide(requested=3)
     app.record.delete_all()
     new_rec = app.record.get_list()
     # no groups left

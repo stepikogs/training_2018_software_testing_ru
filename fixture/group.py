@@ -43,7 +43,6 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cash = None
 
-
     # deletion
     def delete_first(self):
         wd = self.app.wd
@@ -55,7 +54,6 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cash = None
 
-
     def delete_all(self):
         wd = self.app.wd
         self.open_groups_page()
@@ -65,7 +63,6 @@ class GroupHelper:
         wd.find_element_by_name("delete").click()  # delete all the groups selected
         self.return_to_groups_page()
         self.group_cash = None
-
 
     # load
     group_cash = None
@@ -90,10 +87,14 @@ class GroupHelper:
                 # print(att, value)
                 self.app.update_text_field(field=att, value=value)
 
-    def provide(self, count=1):
+    def count(self):
         wd = self.app.wd
         self.open_groups_page()
-        groups_delta = count - len(wd.find_elements_by_name("selected[]"))
+        return len(wd.find_elements_by_name("selected[]"))
+
+    def provide(self, requested=1):
+        self.open_groups_page()
+        groups_delta = requested - self.count()
         if groups_delta > 0:
             for item in range(groups_delta):
                 self.create(Group(group_name='dummy_group'))

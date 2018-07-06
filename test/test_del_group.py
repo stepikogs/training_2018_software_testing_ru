@@ -13,7 +13,7 @@ def test_delete_first_group(app):
 
 
 def test_delete_all_groups(app):
-    app.group.provide(count=3)
+    app.group.provide(requested=3)
     app.group.delete_all()
     new_groups = app.group.get_list()
     # no groups left as result
