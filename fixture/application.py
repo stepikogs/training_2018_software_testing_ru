@@ -16,7 +16,7 @@ class Application:
 
     def is_valid(self):
         try:
-            self.wd.current_url()
+            self.wd.current_url
             return True
         except:
             print('fixture is not valid, re-create.')
@@ -57,9 +57,15 @@ class Application:
             wd.find_element_by_name(field).click()
             wd.find_element_by_name(field).clear()
             wd.find_element_by_name(field).send_keys(value)
-            print(field + ' property is set as "' + str(value) + '".')  # str(value) as value could be INT for years
+            # print(field + ' property is set as "' + str(value) + '".')  # str(value) as value could be INT for years
         else:
-            print(field + ' property has been PASSED as None (check: ' + str(value) + ').')
+            # print(field + ' property has been PASSED as None (check: ' + str(value) + ').')  # debug print
+            pass
+
+    def read_text_field(self, field):
+        wd = self.wd
+        # find the field and return its value (field is assumed to be present, no additional checks requested here)
+        return wd.find_element_by_name(field).get_attribute('value')
 
     def upload_file(self, field, path):
         """
@@ -73,4 +79,5 @@ class Application:
         if path:
             wd.find_element_by_name(field).send_keys(path)
         else:
-            print('Nothing to upload')
+            # print('Nothing to upload')
+            pass
