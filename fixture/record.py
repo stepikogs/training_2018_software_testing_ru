@@ -96,9 +96,9 @@ class RecordHelper:
         wd = self.app.wd
         self.app.open_home_page()
         self.rec_cash = []
-        # dummy record to append cash
-        record_to_cash = Record()
         for element in wd.find_elements_by_xpath('//*[@id="maintable"]/tbody/tr[@name="entry"]'):
+            # dummy record to append cash
+            record_to_cash = Record()
             setattr(record_to_cash, 'firstname', self.record_cell_value(element, 3))
             # first = self.record_cell_value(element, 3)
             setattr(record_to_cash, 'lastname', self.record_cell_value(element, 2))
