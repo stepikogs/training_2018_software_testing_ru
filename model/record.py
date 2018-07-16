@@ -3,13 +3,13 @@ from sys import maxsize
 
 
 class Record:
-
     # do not allow to add new properties after __init__
+    # synthetic (service) not-in-web-form properties start with underscore
     __slots__ = "firstname", \
                 "middlename", \
                 "lastname", \
                 "nickname", \
-                "photo",\
+                "photo", \
                 "title", \
                 "company", \
                 "address", \
@@ -30,8 +30,11 @@ class Record:
                 "address2", \
                 "phone2", \
                 "notes", \
-                "id",\
-                "_phones_from_home"
+                "id", \
+                "_phones_from_home", \
+                "_emails_from_home", \
+                "_phones", \
+                "_emails"
 
     # constructor with optional arguments
     # argument not defined in kwargs will be None
@@ -65,7 +68,13 @@ class Record:
         # memo: id is hidden in form so could not be set
         self.id = kwargs.get('id')
         # properties not available in record form start from underscore
-        # self._phones_from_home = kwargs.get('_phones_from_home')
+        self._phones = ('home',
+                        'mobile',
+                        'work',
+                        'phone2')
+        self._emails = ('email',
+                        'email2',
+                        'email3')
 
     def __repr__(self):
         return '%s: %s %s' % (self.id, self.firstname, self.lastname)

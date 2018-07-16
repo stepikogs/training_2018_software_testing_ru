@@ -43,14 +43,14 @@ class RecordHelper:
         wd = self.app.wd
         return wd.find_elements_by_xpath('//img[@title="Edit"]')[index].click()
 
-    def get_info_from_edit(self, index):
+    def get_info_from_edit(self, index, htmlized=False):
         # wd = self.app.wd
         self.app.open_home_page()
         # create dummy record as source of fields - any property is None
         record = Record()
         self.open_edit_by_index(index=index)
         # read the form and return the 'Record' object updated
-        return self.read_form(record)
+        return self.read_form(record, htmlized)
 
     def modify_by_index(self, upd_record, index):
         wd = self.app.wd
@@ -100,9 +100,12 @@ class RecordHelper:
         for element in wd.find_elements_by_xpath('//*[@id="maintable"]/tbody/tr[@name="entry"]'):
             # dummy record to append cash
             record_to_cash = Record()
+            setattr(record_to_cash, 'id', element.find_element_by_name('selected[]').get_attribute('value'))
             setattr(record_to_cash, 'firstname', self.record_cell_value(element, 3))
             setattr(record_to_cash, 'lastname', self.record_cell_value(element, 2))
-            setattr(record_to_cash, 'id', element.find_element_by_name('selected[]').get_attribute('value'))
+            setattr(record_to_cash, 'address', self.record_cell_value(element, 4))
+            # synthetic properties for phones and emails
+            record_to_cash._emails_from_home = self.record_cell_value(element, 5)
             record_to_cash._phones_from_home = self.record_cell_value(element, 6)
             self.rec_cash.append(record_to_cash)
         return list(self.rec_cash)
@@ -135,7 +138,7 @@ class RecordHelper:
                 else:
                     print('There is no way to reach this!')
 
-    def read_form(self, record):
+    def read_form(self, record, htmlized=False):
         drops = {"bday": 1,  # attribute: form ID dictionary to process them in different way
                  "bmonth": 2,
                  "aday": 3,
@@ -149,6 +152,7 @@ class RecordHelper:
                 if str(att) not in drops and str(att) not in upload:
                     # read value from the field requested
                     field_value = self.app.read_text_field(field=att)
+                    field_value = self.htmlize_it(field_value) if htmlized else field_value
                     # print(att, value)  # debug print
                     # set 'att' property with 'field_value' value
                     setattr(record, att, field_value)
@@ -190,3 +194,8 @@ class RecordHelper:
             print('No enough records found so ' + str(records_delta) + ' new dummy record(-s) created')
         else:
             print('Enough records for the test, nothing to create here, (Check: ' + str(records_delta) + ').')
+
+    @staticmethod
+    def htmlize_it(raw_string):
+        # html replaces multiple spaces with the only space
+        return re.sub('\s{2,}', ' ', raw_string)
