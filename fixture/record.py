@@ -121,8 +121,8 @@ class RecordHelper:
         upload = "photo"  # upload field is special as well
         # fill text fields
         for att in record.__slots__:
-            # ignore id as hidden
-            if att is not 'id':
+            # ignore both id as hidden and all the synthetic '_xxx' fields unable to pass to form
+            if att is not 'id' and not re.match('_.+', att):
                 value = getattr(record, att)
                 # if field is not drop-down one (aka set date)
                 if str(att) not in drops and str(att) not in upload:

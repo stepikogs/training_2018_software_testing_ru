@@ -65,7 +65,7 @@ class Record:
         # memo: id is hidden in form so could not be set
         self.id = kwargs.get('id')
         # properties not available in record form start from underscore
-        self._phones_from_home = kwargs.get('_phones_from_home')
+        # self._phones_from_home = kwargs.get('_phones_from_home')
 
     def __repr__(self):
         return '%s: %s %s' % (self.id, self.firstname, self.lastname)
