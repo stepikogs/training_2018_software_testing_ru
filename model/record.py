@@ -30,7 +30,8 @@ class Record:
                 "address2", \
                 "phone2", \
                 "notes", \
-                "id"
+                "id",\
+                "_phones_from_home"
 
     # constructor with optional arguments
     # argument not defined in kwargs will be None
@@ -61,7 +62,10 @@ class Record:
         self.address2 = kwargs.get('address2')
         self.phone2 = kwargs.get('phone2')
         self.notes = kwargs.get('notes')
+        # memo: id is hidden in form so could not be set
         self.id = kwargs.get('id')
+        # properties not available in record form start from underscore
+        self._phones_from_home = kwargs.get('_phones_from_home')
 
     def __repr__(self):
         return '%s: %s %s' % (self.id, self.firstname, self.lastname)

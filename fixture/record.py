@@ -2,6 +2,7 @@ __author__ = 'George Stepiko'
 from model.record import Record
 import re
 
+
 class RecordHelper:
 
     def __init__(self, app):
@@ -30,10 +31,10 @@ class RecordHelper:
         self.open_view_by_index(index)
         record = Record()
         full_info = wd.find_element_by_id('content').text
-        # get phones info
+        # get phones info   todo: refactor to support backward checks (the only _phones_from_view Record property here)
         setattr(record, 'home', re.search('H: (.*)', full_info).group(1))
         setattr(record, 'mobile', re.search('M: (.*)', full_info).group(1))
-        setattr(record, 'work',re.search('W: (.*)', full_info).group(1))
+        setattr(record, 'work', re.search('W: (.*)', full_info).group(1))
         setattr(record, 'phone2', re.search('P: (.*)', full_info).group(1))
         return record
 
@@ -100,23 +101,10 @@ class RecordHelper:
             # dummy record to append cash
             record_to_cash = Record()
             setattr(record_to_cash, 'firstname', self.record_cell_value(element, 3))
-            # first = self.record_cell_value(element, 3)
             setattr(record_to_cash, 'lastname', self.record_cell_value(element, 2))
-            # last = self.record_cell_value(element, 2)
             setattr(record_to_cash, 'id', element.find_element_by_name('selected[]').get_attribute('value'))
-            # recid = element.find_element_by_name('selected[]').get_attribute('value')
-            phones_list = self.record_cell_value(element, 6).splitlines()
-            # print('phones list is ' + str(phones_list))  # debug print
-            if phones_list:
-                i = 0
-                for attr in ('home', 'mobile', 'work', 'phone2'):
-                    setattr(record_to_cash, attr, phones_list[i])
-                    # print(getattr(record_to_cash, attr))  # debug print
-                    i += 1
+            record_to_cash._phones_from_home = self.record_cell_value(element, 6)
             self.rec_cash.append(record_to_cash)
-            # self.rec_cash.append(Record(firstname=first,
-            #                       lastname=last,
-            #                       id=recid))
         return list(self.rec_cash)
 
     # service methods
@@ -125,6 +113,7 @@ class RecordHelper:
         return element.find_element_by_xpath('td[%s]' % cell).text
 
     def fill_form(self, record):
+        # todo make 'drops' and 'upload' as another '_xxx' Record properties (common through class so could be set)
         drops = {"bday": 1,  # attribute: form ID dictionary to process them in different way
                  "bmonth": 2,
                  "aday": 3,
@@ -132,12 +121,15 @@ class RecordHelper:
         upload = "photo"  # upload field is special as well
         # fill text fields
         for att in record.__slots__:
+            # ignore id as hidden
             if att is not 'id':
                 value = getattr(record, att)
-                if str(att) not in drops and str(att) not in upload:  # if field is not drop-down one (aka set date)
+                # if field is not drop-down one (aka set date)
+                if str(att) not in drops and str(att) not in upload:
                     self.app.update_text_field(field=att, value=value)
                 elif str(att) in drops:
-                    self.set_date(form=drops[att], value=value)  # drop-down fields processed
+                    # drop-down fields processed
+                    self.set_date(form=drops[att], value=value)
                 elif str(att) in upload:
                     self.app.upload_file(field=att, path=value)
                 else:
@@ -151,7 +143,8 @@ class RecordHelper:
         upload = "photo"  # upload field is special as well
         # read text fields, ignore not-text ones
         for att in record.__slots__:
-            if att is not id:
+            # ignore fields unable to read from web-form
+            if not re.match('_.+', att):
                 # for now we need text fields only to verify
                 if str(att) not in drops and str(att) not in upload:
                     # read value from the field requested
