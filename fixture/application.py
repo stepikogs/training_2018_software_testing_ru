@@ -1,5 +1,5 @@
 __author__ = 'George Stepiko'
-from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium import webdriver
 from fixture.session import SessionHelper
 from fixture.group import GroupHelper
 from fixture.record import RecordHelper
@@ -8,11 +8,19 @@ from fixture.record import RecordHelper
 class Application:
 
     # fixture methods
-    def __init__(self):
-        self.wd = WebDriver(capabilities={"marionette": False})
+    def __init__(self, browser, base_url):
+        if browser == 'firefox':
+            self.wd = webdriver.Firefox(capabilities={"marionette": False})
+        elif browser == 'chrome':
+            self.wd = webdriver.Chrome()
+        elif browser == 'ie':
+            self.wd = webdriver.Ie()
+        else:
+            raise ValueError('unrecognized browser %s' % browser)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.record = RecordHelper(self)
+        self.base_url = base_url
 
     def is_valid(self):
         try:
@@ -30,7 +38,7 @@ class Application:
         wd = self.wd
         if wd.current_url.endswith('/addressbook/') and wd.find_elements_by_xpath('//img[@title="Details"]'):
             return
-        wd.get("http://localhost/addressbook/")
+        wd.get(self.base_url)
 
     def return_to_home_page(self):
         wd = self.wd
