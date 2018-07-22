@@ -3,7 +3,7 @@ from model.record import Record
 import random
 import string
 import os.path
-import json
+import jsonpickle
 import getopt
 import sys
 
@@ -16,7 +16,7 @@ except getopt.GetoptError as err:
     sys.exit(2)
 
 n = 5
-f = "data/record.json"
+f = "data/records.json"
 
 for o, a in opts:
     if o == '-n':
@@ -49,4 +49,6 @@ testdata = [
 file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', f)
 with open(file, 'w') as outfile:
     # in my implementation Group object has no __dict__ so build dictionary by myself
-    outfile.write(json.dumps(testdata, default=lambda x: {s: getattr(x, s, None) for s in x.__slots__}, indent=2))
+    jsonpickle.set_encoder_options('json', indent=2)
+    outfile.write(jsonpickle.encode(testdata))
+    # outfile.write(json.dumps(testdata, default=lambda x: {s: getattr(x, s, None) for s in x.__slots__}, indent=2))
