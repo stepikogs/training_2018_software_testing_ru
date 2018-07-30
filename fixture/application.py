@@ -1,3 +1,5 @@
+import re
+
 __author__ = 'George Stepiko'
 from selenium import webdriver
 from fixture.session import SessionHelper
@@ -89,3 +91,9 @@ class Application:
         else:
             # print('Nothing to upload')
             pass
+
+    @staticmethod
+    def htmlize_it(raw_string):
+        # html replaces multiple spaces with the only space
+        # traveling spaces are ignored as well
+        return re.sub('\s{2,}', ' ', raw_string.strip())

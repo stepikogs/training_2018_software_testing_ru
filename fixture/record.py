@@ -1,4 +1,5 @@
 __author__ = 'George Stepiko'
+
 from model.record import Record
 import re
 
@@ -152,7 +153,7 @@ class RecordHelper:
                 if str(att) not in drops and str(att) not in upload:
                     # read value from the field requested
                     field_value = self.app.read_text_field(field=att)
-                    field_value = self.htmlize_it(field_value) if htmlized else field_value
+                    field_value = self.app.htmlize_it(field_value) if htmlized else field_value
                     # print(att, value)  # debug print
                     # set 'att' property with 'field_value' value
                     setattr(record, att, field_value)
@@ -194,8 +195,3 @@ class RecordHelper:
             print('No enough records found so ' + str(records_delta) + ' new dummy record(-s) created')
         else:
             print('Enough records for the test, nothing to create here, (Check: ' + str(records_delta) + ').')
-
-    @staticmethod
-    def htmlize_it(raw_string):
-        # html replaces multiple spaces with the only space
-        return re.sub('\s{2,}', ' ', raw_string)
