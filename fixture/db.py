@@ -2,6 +2,7 @@ __author__ = 'George Stepiko'
 
 import pymysql.cursors
 from model.group import Group
+from model.record import Record
 
 
 class DbFixture:
@@ -31,6 +32,20 @@ class DbFixture:
         finally:
             cursor.close()
         return group_list
+
+    def get_record_list(self):
+        record_list=[]
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute('select id, firstname, lastname from addressbook')
+            for row in cursor:
+                (id, firstname, lastname) = row
+                record_list.append(Record(id=str(id),
+                                          firstname=firstname,
+                                          lastname=lastname))
+        finally:
+            cursor.close()
+        return record_list
 
     def destroy(self):
         self.connection.close()
