@@ -21,7 +21,7 @@ class Application:
             raise ValueError('unrecognized browser %s' % browser)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self, db)
-        self.record = RecordHelper(self)
+        self.record = RecordHelper(self, db)
         self.base_url = base_url
 
     def is_valid(self):

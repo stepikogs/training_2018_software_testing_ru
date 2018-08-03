@@ -6,8 +6,9 @@ import re
 
 class RecordHelper:
 
-    def __init__(self, app):
+    def __init__(self, app, db):
         self.app = app
+        self.db = db
 
     # creation
     def create(self, record):
@@ -71,6 +72,17 @@ class RecordHelper:
         self.app.open_home_page()
         # select first record
         self.app.select_by_index(index=index)
+        # delete first element if selected successfully
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        # deletion confirmation
+        wd.switch_to_alert().accept()
+        self.rec_cash = None
+
+    def delete_by_id(self, rec_id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # select first record
+        self.app.select_by_id(rec_id)
         # delete first element if selected successfully
         wd.find_element_by_xpath('//input[@value="Delete"]').click()
         # deletion confirmation
@@ -186,9 +198,9 @@ class RecordHelper:
         self.app.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def provide(self, requested=1, record=Record(firstname='dummy')):
+    def provide(self, requested=1, record=Record(firstname='dummy'), where='db'):
         self.app.open_home_page()
-        records_delta = requested - self.count()
+        records_delta = requested - self.count() if where == 'web' else requested - len(self.db.get_record_list())
         if records_delta > 0:
             for item in range(records_delta):
                 self.create(record)
