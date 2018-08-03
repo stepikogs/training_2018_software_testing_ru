@@ -1,30 +1,39 @@
 # -*- coding: utf-8 -*-
-from random import randrange
+from model.group import Group
+from random import choice
 
 
 # test methods
-def test_delete_random_group(app):
+def test_delete_random_group(app, db, check_ui):
     app.group.provide()
-    old_groups = app.group.get_list()
-    index = randrange(len(old_groups))
-    app.group.delete_by_index(index)
-    assert len(old_groups) - 1 == app.group.count()
-    new_groups = app.group.get_list()
-    old_groups[index:index+1] = []
+    old_groups = db.get_group_list()
+    group = choice(old_groups)
+    app.group.delete_by_id(group.id)
+    new_groups = db.get_group_list()
+    assert len(old_groups) - 1 == len(new_groups)
+    old_groups.remove(group)
     assert old_groups == new_groups
+    if check_ui:
+        # fixme does not work with multi and traveling spaces
+        assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_list(), key=Group.id_or_max)
 
 
-def test_delete_first_group(app):
+def test_delete_first_group(app, db, check_ui):
     app.group.provide()
-    old_groups = app.group.get_list()
+    old_groups = db.get_group_list()
     app.group.delete_first()
-    assert len(old_groups) - 1 == app.group.count()
-    new_groups = app.group.get_list()
+    new_groups = db.get_group_list()
+    assert len(old_groups) - 1 == len(new_groups)
     old_groups[0:1] = []
     assert old_groups == new_groups
+    if check_ui:
+        # fixme does not work with multi and traveling spaces
+        assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_list(), key=Group.id_or_max)
 
 
-def test_delete_all_groups(app):
+def test_delete_all_groups(app, db, check_ui):
     app.group.provide(requested=3)
     app.group.delete_all()
-    assert app.group.count() == 0
+    assert len(db.get_group_list()) == 0
+    if check_ui:
+        assert len(app.group.get_list()) == 0

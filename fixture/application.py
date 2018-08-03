@@ -10,7 +10,7 @@ from fixture.record import RecordHelper
 class Application:
 
     # fixture methods
-    def __init__(self, browser, base_url):
+    def __init__(self, browser, base_url, db):
         if browser == 'firefox':
             self.wd = webdriver.Firefox(capabilities={"marionette": False})
         elif browser == 'chrome':
@@ -20,7 +20,7 @@ class Application:
         else:
             raise ValueError('unrecognized browser %s' % browser)
         self.session = SessionHelper(self)
-        self.group = GroupHelper(self)
+        self.group = GroupHelper(self, db)
         self.record = RecordHelper(self)
         self.base_url = base_url
 
@@ -52,6 +52,10 @@ class Application:
     def select_by_index(self, index):
         wd = self.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_by_id(self, id):
+        wd = self.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def update_text_field(self, field, value):
         """

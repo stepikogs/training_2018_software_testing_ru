@@ -21,12 +21,12 @@ def load_config(file):
 
 
 @pytest.fixture  # (scope='session')
-def app(request):
+def app(request, db):
     global fixture
     web_config = load_config(request.config.getoption('--target'))['web']
     browser = request.config.getoption('--browser')
     if fixture is None or not fixture.is_valid():
-        fixture = Application(browser=browser, base_url=web_config['baseUrl'])
+        fixture = Application(browser=browser, base_url=web_config['baseUrl'], db=db)
     fixture.session.ensure_login(username=web_config['username'], password=web_config['password'])
     return fixture
 
@@ -40,7 +40,7 @@ def db(request):
                           password=db_config['password'])
 
     def finik():
-        dbfixture.destroy
+        dbfixture.destroy()
     request.addfinalizer(finik)
     return dbfixture
 
@@ -55,9 +55,15 @@ def stop(request):
     return fixture
 
 
+@pytest.fixture()
+def check_ui(request):
+    return request.config.getoption('--check_ui')
+
+
 def pytest_addoption(parser):
     parser.addoption('--browser', action='store', default='chrome')
     parser.addoption('--target', action='store', default='target.json')
+    parser.addoption('--check_ui', action='store_true')
 
 
 def pytest_generate_tests(metafunc):
@@ -74,6 +80,6 @@ def load_from_module(module):
     return importlib.import_module('data.%s' % module).testdata
 
 
-def load_from_json(jsonFile):
-    with open (os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/%s.json' % jsonFile)) as source:
+def load_from_json(json_file):
+    with open (os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/%s.json' % json_file)) as source:
         return jsonpickle.decode(source.read())

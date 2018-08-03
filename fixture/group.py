@@ -4,8 +4,9 @@ from model.group import Group
 
 class GroupHelper:
 
-    def __init__(self, app):
+    def __init__(self, app, db):
         self.app = app
+        self.db = db
 
     # groups navigation
     def open_groups_page(self):
@@ -34,8 +35,17 @@ class GroupHelper:
     def modify_by_index(self, upd_group, index):
         wd = self.app.wd
         self.open_groups_page()
-        # edit first group found in list
         self.app.select_by_index(index)
+        wd.find_element_by_name("edit").click()
+        self.fill_form(upd_group)
+        wd.find_element_by_name("update").click()
+        self.return_to_groups_page()
+        self.group_cash = None
+
+    def modify_by_id(self, upd_group, group_id):
+        wd = self.app.wd
+        self.open_groups_page()
+        self.app.select_by_id(group_id)
         wd.find_element_by_name("edit").click()
         self.fill_form(upd_group)
         wd.find_element_by_name("update").click()
@@ -52,8 +62,17 @@ class GroupHelper:
     def delete_by_index(self, index):
         wd = self.app.wd
         self.open_groups_page()
-        # select first group
         self.app.select_by_index(index)
+        # delete the group selected
+        wd.find_element_by_name("delete").click()
+        self.return_to_groups_page()
+        self.group_cash = None
+
+    def delete_by_id(self, group_id):
+        wd = self.app.wd
+        self.open_groups_page()
+        # select first group
+        self.app.select_by_id(group_id)
         # delete the group selected
         wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
@@ -97,12 +116,14 @@ class GroupHelper:
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def provide(self, requested=1):
+    def provide(self, requested=1, where='db'):
         self.open_groups_page()
-        groups_delta = requested - self.count()
+        # todo fix the conditions below
+        groups_delta = requested - self.count() if where == 'web' else requested - len(self.db.get_group_list())
         if groups_delta > 0:
             for item in range(groups_delta):
                 self.create(Group(group_name='dummy_group'))
             print('No enough groups found so ' + str(groups_delta) + ' new dummy group(-s) created')
         else:
             print('Enough groups for the test, nothing to create here, (Check: ' + str(groups_delta) + ').')
+
