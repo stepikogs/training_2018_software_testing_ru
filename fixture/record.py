@@ -134,6 +134,25 @@ class RecordHelper:
             self.rec_cash.append(record_to_cash)
         return list(self.rec_cash)
 
+    # record to group
+    def add_record_to_group_by_ids(self, group, record):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.app.select_by_id(record.id)
+        wd.find_element_by_xpath("//select[@name='to_group']/option[@value='%s']" % group.id).click()
+        wd.find_element_by_name("add").click()
+        self.app.open_home_page()
+        self.rec_cash = None
+
+    def remove_record_from_group_by_ids(self, record, group):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_xpath("//select[@name='group']/option[@value='%s']" % group.id).click()
+        self.app.select_by_id(record.id)
+        wd.find_element_by_name("remove").click()
+        self.app.open_home_page()
+        self.contact_cache = None
+
     # service methods
     @staticmethod
     def record_cell_value(element, cell):
@@ -210,8 +229,12 @@ class RecordHelper:
         return len(wd.find_elements_by_name("selected[]"))
 
     def provide(self, requested=1, record=Record(firstname='dummy'), where='db'):
-        self.app.open_home_page()
-        records_delta = requested - self.count() if where == 'web' else requested - len(self.db.get_record_list())
+        records_delta = 0
+        if where == 'web':
+            self.app.open_home_page()
+            records_delta = requested - self.count()
+        elif where == 'db':
+            records_delta = requested - len(self.db.get_record_list())
         if records_delta > 0:
             for item in range(records_delta):
                 self.create(record)

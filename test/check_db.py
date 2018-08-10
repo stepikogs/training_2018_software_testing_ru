@@ -7,7 +7,7 @@ from model.group import Group
 db = OrmFixture(host='127.0.0.1', name='addressbook', user='root', password='')
 
 try:
-    lala = db.get_records_not_in_group(Group(id='118'))
+    lala = db.get_records_in_group(Group(id='96'))
     for item in lala:
         print(item)
     print(len(lala))

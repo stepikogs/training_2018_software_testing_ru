@@ -117,9 +117,12 @@ class GroupHelper:
         return len(wd.find_elements_by_name("selected[]"))
 
     def provide(self, requested=1, where='db'):
-        self.open_groups_page()
-        # todo fix the conditions below
-        groups_delta = requested - self.count() if where == 'web' else requested - len(self.db.get_group_list())
+        groups_delta = 0
+        if where == 'web':
+            self.open_groups_page()
+            groups_delta = requested - self.count()
+        elif where == 'db':
+            groups_delta = requested - len(self.db.get_group_list())
         if groups_delta > 0:
             for item in range(groups_delta):
                 self.create(Group(group_name='dummy_group'))
