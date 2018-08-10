@@ -33,16 +33,35 @@ class DbFixture:
             cursor.close()
         return group_list
 
-    def get_record_list(self):
+    def get_record_list(self, extended=False):
         record_list=[]
         cursor = self.connection.cursor()
         try:
-            cursor.execute('select id, firstname, lastname from addressbook where deprecated="0000-00-00 00:00:00"')
-            for row in cursor:
-                (id, firstname, lastname) = row
-                record_list.append(Record(id=str(id),
-                                          firstname=firstname,
-                                          lastname=lastname))
+            if not extended:
+                cursor.execute('select id, firstname, lastname from addressbook where deprecated="0000-00-00 00:00:00"')
+                for row in cursor:
+                    (id, firstname, lastname) = row
+                    record_list.append(Record(id=str(id),
+                                              firstname=firstname,
+                                              lastname=lastname))
+            elif extended:
+                cursor.execute('select id, firstname, lastname, \
+                address, home, mobile, work, phone2, email, email2, email3 \
+                from addressbook \
+                where deprecated="0000-00-00 00:00:00"')
+                for row in cursor:
+                    (id, firstname, lastname, address, home, mobile, work, phone2, email, email2, email3,) = row
+                    record_list.append(Record(id=str(id),
+                                              firstname=firstname,
+                                              lastname=lastname,
+                                              address=address,
+                                              home=home,
+                                              mobile=mobile,
+                                              work=work,
+                                              phone2=phone2,
+                                              email=email,
+                                              email2=email2,
+                                              email3=email3))
         finally:
             cursor.close()
         return record_list

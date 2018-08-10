@@ -117,7 +117,7 @@ class RecordHelper:
     # load
     rec_cash = None
 
-    def get_list(self):  # todo: remove outdated (commented) lines here
+    def get_list(self):
         wd = self.app.wd
         self.app.open_home_page()
         self.rec_cash = []
