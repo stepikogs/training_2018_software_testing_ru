@@ -45,6 +45,10 @@ class RecordHelper:
         wd = self.app.wd
         return wd.find_elements_by_xpath('//img[@title="Edit"]')[index].click()
 
+    def open_edit_by_id(self, rec_id):
+        wd = self.app.wd
+        return wd.find_element_by_css_selector("a[href='edit.php?id=%s']" % str(rec_id)).click()
+
     def get_info_from_edit(self, index, htmlized=False):
         # wd = self.app.wd
         self.app.open_home_page()
@@ -57,7 +61,14 @@ class RecordHelper:
     def modify_by_index(self, upd_record, index):
         wd = self.app.wd
         self.open_edit_by_index(index=index)
-        # wd.find_elements_by_xpath('//img[@title="Edit"]')[index].click()
+        self.fill_form(upd_record)
+        wd.find_element_by_name("update").click()
+        self.app.return_to_home_page()
+        self.rec_cash = None
+
+    def modify_by_id(self, upd_record, rec_id):
+        wd = self.app.wd
+        self.open_edit_by_id(rec_id)
         self.fill_form(upd_record)
         wd.find_element_by_name("update").click()
         self.app.return_to_home_page()
