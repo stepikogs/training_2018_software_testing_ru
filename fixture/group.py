@@ -4,7 +4,7 @@ from model.group import Group
 
 class GroupHelper:
 
-    def __init__(self, app, db):
+    def __init__(self, app, db):  # todo: split app and db - must be independent
         self.app = app
         self.db = db
 
@@ -116,7 +116,7 @@ class GroupHelper:
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def provide(self, requested=1, where='db'):
+    def provide(self, requested=1, where='db'):  # todo mode db-provide part to db fixture
         groups_delta = 0
         if where == 'web':
             self.open_groups_page()
