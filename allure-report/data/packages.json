@@ -1,0 +1,93 @@
+{
+  "uid" : "83edc06c07f9ae9e47eb6dd1b683e4e2",
+  "name" : "packages",
+  "children" : [ {
+    "name" : "test.test_add_group_allure",
+    "children" : [ {
+      "name" : "test_add_group[None:nameUe:headerpY:footerOr36]",
+      "uid" : "7d2d1bef0277c59a",
+      "parentUid" : "f2c6474e57c12e87428f334a4e377185",
+      "status" : "passed",
+      "time" : {
+        "start" : 1534829160631,
+        "stop" : 1534829176879,
+        "duration" : 16248
+      },
+      "flaky" : false,
+      "parameters" : [ ]
+    }, {
+      "name" : "test_add_group[None:namehqWnQzGc:headerUoOhwCEf:footerl8N9weJ]",
+      "uid" : "4dd1aea6bc73564e",
+      "parentUid" : "f2c6474e57c12e87428f334a4e377185",
+      "status" : "passed",
+      "time" : {
+        "start" : 1534829176880,
+        "stop" : 1534829183037,
+        "duration" : 6157
+      },
+      "flaky" : false,
+      "parameters" : [ ]
+    }, {
+      "name" : "test_add_group[None:nameFrer4odHq:headerR:footeraMmRdAnO]",
+      "uid" : "4ed6b13ddcb9fa22",
+      "parentUid" : "f2c6474e57c12e87428f334a4e377185",
+      "status" : "passed",
+      "time" : {
+        "start" : 1534829183038,
+        "stop" : 1534829188489,
+        "duration" : 5451
+      },
+      "flaky" : false,
+      "parameters" : [ ]
+    }, {
+      "name" : "test_add_group[None:name653R:headerFT:footer]",
+      "uid" : "f067d3c02e24ffaf",
+      "parentUid" : "f2c6474e57c12e87428f334a4e377185",
+      "status" : "passed",
+      "time" : {
+        "start" : 1534829188490,
+        "stop" : 1534829194175,
+        "duration" : 5685
+      },
+      "flaky" : false,
+      "parameters" : [ ]
+    }, {
+      "name" : "test_add_group[None:name6zbeG:header7:footer]",
+      "uid" : "599120b4fe5f8f9f",
+      "parentUid" : "f2c6474e57c12e87428f334a4e377185",
+      "status" : "passed",
+      "time" : {
+        "start" : 1534829194300,
+        "stop" : 1534829199396,
+        "duration" : 5096
+      },
+      "flaky" : false,
+      "parameters" : [ ]
+    }, {
+      "name" : "test_add_group[None:name5eXxzFAVk:header0lQtJx72:footerUiFEgE]",
+      "uid" : "511cb16976eeeb33",
+      "parentUid" : "f2c6474e57c12e87428f334a4e377185",
+      "status" : "passed",
+      "time" : {
+        "start" : 1534829199411,
+        "stop" : 1534829204734,
+        "duration" : 5323
+      },
+      "flaky" : false,
+      "parameters" : [ ]
+    }, {
+      "name" : "test_add_group[None:None:None:None]",
+      "uid" : "56ce73b8aa15c5e3",
+      "parentUid" : "f2c6474e57c12e87428f334a4e377185",
+      "status" : "passed",
+      "time" : {
+        "start" : 1534829204735,
+        "stop" : 1534829207869,
+        "duration" : 3134
+      },
+      "flaky" : false,
+      "parameters" : [ ]
+    } ],
+    "uid" : "test.test_add_group_allure"
+  } ]
+}

@@ -1,0 +1,115 @@
+{
+  "uid" : "511cb16976eeeb33",
+  "name" : "test_add_group[None:name5eXxzFAVk:header0lQtJx72:footerUiFEgE]",
+  "fullName" : "test.test_add_group_allure.test_add_group[None:name5eXxzFAVk:header0lQtJx72:footerUiFEgE]",
+  "historyId" : "f6a7aeba749ef7556921eb44a0cc1a4d",
+  "time" : {
+    "start" : 1534829199411,
+    "stop" : 1534829204734,
+    "duration" : 5323
+  },
+  "description" : "",
+  "descriptionHtml" : "",
+  "status" : "passed",
+  "flaky" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Given a group list",
+      "time" : {
+        "start" : 1534829199928,
+        "stop" : 1534829199928,
+        "duration" : 0
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "hasContent" : false,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "When I create None:name5eXxzFAVk:header0lQtJx72:footerUiFEgE group",
+      "time" : {
+        "start" : 1534829199928,
+        "stop" : 1534829204732,
+        "duration" : 4804
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "hasContent" : false,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "the new group list is equal to the old list with the added group",
+      "time" : {
+        "start" : 1534829204732,
+        "stop" : 1534829204734,
+        "duration" : 2
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "hasContent" : false,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : true,
+    "stepsCount" : 3,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "host",
+    "value" : "lucas-win8"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "severity",
+    "value" : "normal"
+  }, {
+    "name" : "thread",
+    "value" : "5868-MainThread"
+  }, {
+    "name" : "suite",
+    "value" : "test.test_add_group_allure"
+  }, {
+    "name" : "testClass",
+    "value" : "test.test_add_group_allure"
+  }, {
+    "name" : "testMethod",
+    "value" : "test_add_group[None:name5eXxzFAVk:header0lQtJx72:footerUiFEgE]"
+  }, {
+    "name" : "package",
+    "value" : "test.test_add_group_allure"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure1"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "511cb16976eeeb33.json",
+  "parameterValues" : [ ]
+}
